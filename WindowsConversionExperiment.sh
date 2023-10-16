@@ -2,7 +2,6 @@
 
 # Download Variables
 # win10url="https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-live-server-arm64.iso"
-win10url="http://100.70.91.180:5500/Win10.iso"
 # VirtIO="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 
 # Variables Linux
