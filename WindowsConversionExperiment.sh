@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Download Variables
-win10url="https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-live-server-arm64.iso"
+# win10url="https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-live-server-arm64.iso"
+win10url="http://100.70.91.180:5500/Win10.iso"
 # VirtIO="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 
 # Variables Linux
@@ -61,23 +62,14 @@ echo "Enabling GRUB..."
 sudo sed -i 's/GRUB_TIMEOUT_STYLE=/#GRUB_TIMEOUT_STYLE=/' /etc/default/grub
 sudo sed -i 's/GRUB_TIMEOUT=/GRUB_TIMEOUT=5/' /etc/default/grub
 echo "GRUB Enabled!"
-wait 2
-# cat <<EOF >> /etc/grub.d/40_custom
-# menuentry "Windows 10" {
-#     insmod part_msdos
-#     insmod part_gpt
-#     insmod fat
-#     set root='(hd1)'
-#     drivemap -s (hd0) ${root}
-#     chainloader +1
-# }
-# EOF
+sleep 2
+
 echo "Adding Windows 10 to GRUB..."
 cat <<EOF >> /etc/grub.d/40_custom
 menuentry "Install on sdb1" {
-    set root=(hd1,1)
-    linux /boot/vmlinuz root=/dev/sdb1 ro quiet splash
-    initrd /boot/initrd.img
+set root=(hd1,msdos1) # Use the correct device designation for your USB drive.
+chainloader /efi/boot/bootaa64.efi
+boot
 }
 EOF
 update-grub
