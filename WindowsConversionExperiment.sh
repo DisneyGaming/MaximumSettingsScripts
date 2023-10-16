@@ -33,7 +33,10 @@ echo "Download Complete!"
 # echo "Download Complete!"
 
 # Begin Stage three (Flash ISO to Secondary Storage)
-echo "Please input the location of your secondary HDD storage (e.g. /dev/sdb)"
+
+# echo "Please input the location of your secondary HDD storage (e.g. /dev/sdb)"
+# read HDDLocation
+
 echo "WARNING: This will erase all data on the drive!"
 echo "Do you wish to proceed? (y/n)"
 read FormatAnswer
