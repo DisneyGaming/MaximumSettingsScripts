@@ -56,4 +56,29 @@ parted -a optimal /dev/sdb mkpart primary 75% 100%
 dd if=/tmp/win10.iso of=/dev/sdb1 status=progress
 # dd if=/tmp/virtio.iso of=/dev/sdb2 status=progress
 
+# Begin Stage four (Add Windows 10 to GRUB)
+echo "Enabling GRUB..."
+sudo sed -i 's/GRUB_TIMEOUT_STYLE=/#GRUB_TIMEOUT_STYLE=/' /etc/default/grub
+sudo sed -i 's/GRUB_TIMEOUT=/GRUB_TIMEOUT=5/' /etc/default/grub
+echo "GRUB Enabled!"
+wait 2
+# cat <<EOF >> /etc/grub.d/40_custom
+# menuentry "Windows 10" {
+#     insmod part_msdos
+#     insmod part_gpt
+#     insmod fat
+#     set root='(hd1)'
+#     drivemap -s (hd0) ${root}
+#     chainloader +1
+# }
+# EOF
+echo "Adding Windows 10 to GRUB..."
+cat <<EOF >> /etc/grub.d/40_custom
+menuentry "Install on sdb1" {
+    set root=(hd1,1)
+    linux /boot/vmlinuz root=/dev/sdb1 ro quiet splash
+    initrd /boot/initrd.img
+}
+EOF
+update-grub
 
