@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download Variables
-win10url="http://tinycorelinux.net/4.x/armv7/a10Core.img.gz"
+win10url="https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-live-server-arm64.iso"
 # VirtIO="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 
 # Variables Linux
@@ -25,8 +25,7 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     fi
 # Begin Stage one (Download Windows 10 ISO & VirtIO Drivers)
 echo "Downloading Windows 10 ISO..."
-wget -O /tmp/win10.img.gz "$win10url" -q --show-progress
-gzip -d /tmp/win10.img.gz
+wget -O /tmp/win10.iso "$win10url" -q --show-progress
 echo "Download Complete!"
 
 # echo "Downloading VirtIO Drivers..."
@@ -51,7 +50,7 @@ sleep 2
 parted -a optimal /dev/sdb mkpart primary 0% 75%
 parted -a optimal /dev/sdb mkpart primary 75% 100%
 
-dd if=/tmp/win10.img of=/dev/sdb1 status=progress
+dd if=/tmp/win10.iso of=/dev/sdb1 status=progress
 # dd if=/tmp/virtio.iso of=/dev/sdb2 status=progress
 
 
