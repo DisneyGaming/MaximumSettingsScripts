@@ -2,7 +2,7 @@
 
 # Download Variables
 # win10url="https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-live-server-arm64.iso"
-# VirtIO="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
+win10url="http://148.197.76.111:5500/Win10.iso"
 
 # Variables Linux
 wget=/usr/bin/wget
@@ -23,14 +23,17 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     echo "Exiting..."
     exit
     fi
+
+# Prerequisites
+echo "Installing Prerequisites..."
+apt update
+apt install wget parted -y
+
 # Begin Stage one (Download Windows 10 ISO & VirtIO Drivers)
 echo "Downloading Windows 10 ISO..."
 wget -O /tmp/win10.iso "$win10url" -q --show-progress
 echo "Download Complete!"
 
-# echo "Downloading VirtIO Drivers..."
-# wget -O /tmp/virtio.iso "$VirtIO" -q --show-progress
-# echo "Download Complete!"
 
 # Begin Stage three (Flash ISO to Secondary Storage)
 
@@ -65,8 +68,8 @@ sleep 2
 
 echo "Adding Windows 10 to GRUB..."
 cat <<EOF >> /etc/grub.d/40_custom
-menuentry "Install on sdb1" {
-set root=(hd1,msdos1) # Use the correct device designation for your USB drive.
+menuentry "Load me for Windows 10!" {
+set root=(hd1,msdos1) # Adds Windows 10 Installer via Chainloader of the GRUB loader.
 chainloader /efi/boot/bootaa64.efi
 boot
 }
