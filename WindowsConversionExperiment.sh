@@ -29,12 +29,11 @@ echo "Installing Prerequisites..."
 apt update
 apt install wget parted -y
 
-# Begin Stage one (Download Windows 10 ISO & VirtIO Drivers)
-echo "Downloading Windows 10 ISO..."
-wget -O /tmp/win10.iso "$win10url" -q --show-progress
-echo "Download Complete!"
-
-
+if [ -f "CustomWin10.iso" ]; then
+    ISO_PATH="./CustomWin10.iso"
+else
+    exit 1
+fi
 # Begin Stage three (Flash ISO to Secondary Storage)
 
 # echo "Please input the location of your secondary HDD storage (e.g. /dev/sdb)"
