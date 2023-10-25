@@ -15,7 +15,8 @@ echo "Press Enter to continue or Ctrl+C to cancel."
 read
 
 # Pre-requisites
-apt-get install -y genisoimage wimtools wget
+apt-get update
+apt-get install -y genisoimage wimlib wget
 
 # Check if the script is running in the same folder as the Windows 10 ISO
 if [ -f "win10x64.iso" ]; then
